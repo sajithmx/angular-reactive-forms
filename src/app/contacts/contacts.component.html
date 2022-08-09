@@ -1,0 +1,74 @@
+<pre>{{ this.contactForm.value | json }}</pre>
+<pre>{{ this.contactForm.valid }}</pre>
+<pre>{{ this.contactForm.errors | json }}</pre>
+
+<br />
+<hr />
+<form [formGroup]="contactForm">
+  <div>
+    <label for="name">Name: </label>
+    <input type="text" id="name" formControlName="name" />
+  </div>
+  <br />
+  <hr />
+
+  <div formArrayName="nicknames">
+    <ng-container *ngFor="let formControl of nicknames.controls; let i = index">
+      <div>
+        <label for="nicknames">Nickname {{ i + 1 }}: </label>
+        <!-- <input type="text" id="nicknames" [formControlName]="i" /> -->
+        <input type="text" id="nicknames" [formControl]="formControl" />
+        <!-- We can use formControl or formControlName both will work -->
+        <button (click)="removeNicknames(i)">Remove</button>
+      </div>
+    </ng-container>
+
+    <button (click)="addNicknames()">Add Nicknames</button>
+  </div>
+  <br />
+  <hr />
+
+  <div>
+    <label for="gender">Gender: </label>
+    <input type="radio" id="gender" formControlName="gender" value="male" />
+    <input type="radio" id="gender" formControlName="gender" value="female" />
+  </div>
+  <br />
+  <hr />
+
+  <div>
+    <label for="nri">NRI: </label>
+    <input type="checkbox" id="nri" formControlName="nri" />
+  </div>
+  <br />
+  <hr />
+
+  <div>
+    <label for="state">State: </label>
+    <select formControlName="state">
+      <option value="">Select</option>
+      <option value="Kerala">Kerala</option>
+      <option value="Karnataka">Karnataka</option>
+    </select>
+  </div>
+  <br />
+  <hr />
+
+  <div formArrayName="address">
+    <ng-container
+      *ngFor="let _ of address.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div>
+        <label for="address">Address {{ i + 1 }}: </label>
+        <input type="text" id="address" formControlName="street" />
+        <input type="text" formControlName="city" />
+        <button (click)="removeAddress(i)">Remove</button>
+      </div>
+      {{ address.controls[i].controls.city.errors | json }}
+      {{ address.controls[i].errors | json }}
+    </ng-container>
+
+    <button (click)="addAddress()">Add Address</button>
+  </div>
+</form>
